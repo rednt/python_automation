@@ -5,6 +5,7 @@ __pycache__/
 
 # Dot env files
 env*
+.venv*
 
 
 # C extensions

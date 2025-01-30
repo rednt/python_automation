@@ -1,3 +1,3 @@
 # Python automation
-## Email sorter
+## Email de-clutter
 

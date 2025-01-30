@@ -20,7 +20,7 @@ def search_condition(mail, folders,cleaned_folders):
         if len(parts) < 2:
             print("Invalid condition. Please specify a folder or query after 'FROM'.")
             logging.error("Invalid condition. Please specify a folder or query after 'FROM'.")
-            return
+            return []
         folder_query = parts[1].split()[0]
         print(f"\033[0;32m{folder_query}\033[0m")
         logging.info(f"Folder query: {folder_query}")
@@ -31,7 +31,7 @@ def search_condition(mail, folders,cleaned_folders):
         if not matching_folders:
             print(f"No matching folders found for '{folder_query}'.")
             logging.info(f"No matching folders found for '{folder_query}'.")
-            return
+            return []
         elif len(matching_folders) > 1:
             print("\nMultiple matching folders found:")
             logging.info("Multiple matching folders found:")
@@ -44,7 +44,7 @@ def search_condition(mail, folders,cleaned_folders):
             except (ValueError, IndexError):
                 print("Invalid selection.")
                 logging.error("Invalid selection while choosing a folder.")
-                return
+                return []
         else:
             selected_folder = matching_folders[0]
         
@@ -56,7 +56,8 @@ def search_condition(mail, folders,cleaned_folders):
         remaining_condition = condition[len(f"FROM {folder_query}"):].strip()
     else:
         # If no "FROM", assume the default folder is selected (e.g., INBOX)
-        mail.select("INBOX")
+        folder_query = "INBOX"
+        mail.select(folder_query)
         logging.info("Selected default mail folder: INBOX")
         remaining_condition = condition.strip()
     
@@ -72,12 +73,15 @@ def search_condition(mail, folders,cleaned_folders):
             email_list = email_ids[0].split()
             print(f"Found {len(email_list)} emails matching the condition {f"FROM {folder_query}"} '{remaining_condition.upper()}'.")
             logging.info(f"Found {len(email_list)} emails matching the condition {f"FROM {folder_query}"} '{remaining_condition.upper()}'.")
+            return email_list
         else:
             print(f"No emails found for the condition '{condition}'.")
             logging.info(f"No emails found for the condition '{condition}'.")
+            return []
     except imaplib.IMAP4.error as e:
         print(f"An error occurred while searching for emails: {e}")
         logging.error(f"An error occurred while searching for emails: {e}")
+        return []
 
 def search_folder_nltk(folders,cleaned_folders,query):
     threshold = 2  # Adjust for stricter or looser matching

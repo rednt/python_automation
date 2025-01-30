@@ -16,7 +16,7 @@ def list_folders(mail):
     status, folders = mail.list()
     folder_list = []
     cleaned_folder_list = []  # List to store cleaned folder names for easier matching
-    full_folder_dict = {}  # Dictionary to map cleaned folder names to full folder names
+    
 
     if status == "OK":
         print("Available folders:\n")
@@ -33,7 +33,7 @@ def list_folders(mail):
             # Add to the lists
             folder_list.append(full_folder_name)  # Original folder name for usage
             cleaned_folder_list.append(cleaned_folder_name)  # Cleaned folder name for matching
-            full_folder_dict[cleaned_folder_name] = full_folder_name  # Map cleaned to full name
+            
             
             print(f"- {cleaned_folder_name}")  # Show the cleaned folder name for matching
             
@@ -41,7 +41,7 @@ def list_folders(mail):
         print("Could not retrieve folder list.")
         logging.info('Could not retrieve folder list')
     
-    return folder_list, cleaned_folder_list, full_folder_dict        
+    return folder_list, cleaned_folder_list  
 
 # Connect to the email server
 def connect_to_email():

@@ -1,4 +1,5 @@
 import imaplib
+import logging
 import os
 from dotenv import load_dotenv
 # account credentials
@@ -8,6 +9,8 @@ load_dotenv('./env/.env') # Load the environment variables from the .env file [E
 imap_server = "imap.gmail.com"
 username = os.getenv("EMAIL")
 password = os.getenv("PASSWORD")
+
+logging.basicConfig(filename='email_cleaner.log', level=logging.DEBUG)
 
 def list_folders(mail):
     status, folders = mail.list()
@@ -36,6 +39,7 @@ def list_folders(mail):
             
     else:
         print("Could not retrieve folder list.")
+        logging.info('Could not retrieve folder list')
     
     return folder_list, cleaned_folder_list, full_folder_dict        
 
@@ -46,8 +50,10 @@ def connect_to_email():
         mail = imaplib.IMAP4_SSL(imap_server)
         # Login to the account
         mail.login(username, password)
+        logging.info('Login successful')
         print("\nLogin successful.\n")
         return mail
     except imaplib.IMAP4.error as e:
+        logging.error(f"\nFailed to login: {e}")
         print(f"\nFailed to login: {e}")
         return None

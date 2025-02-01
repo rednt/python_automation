@@ -7,7 +7,7 @@ A Python script to declutter your Gmail inbox by automatically organizing emails
 - Exclude Important and Updates folders from operations
 - Move emails to Trash
 - Archive emails
-- Detailed logging of operations
+- Logging of operations
 
 ### Prerequisites
 - Python 3.12

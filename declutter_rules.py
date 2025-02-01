@@ -5,7 +5,6 @@ logging.basicConfig(filename='email_cleaner.log', level=logging.DEBUG)
 
 def move_to_trash(mail, email_ids):
     try:
-        email_ids = filterIds(mail, email_ids)
         trash_folder = "[Gmail]/Trash"  # Gmail trash folder 
 
         if not email_ids:
@@ -38,7 +37,6 @@ def move_to_trash(mail, email_ids):
 
 def archive_emails(mail, email_ids):
     archive_folder = "Archive"
-    email_ids = filterIds(mail, email_ids)
     try:
         mail.create(archive_folder)
     except:
@@ -59,13 +57,55 @@ def archive_emails(mail, email_ids):
     print(f"Archived {len(email_ids)} emails to the '{archive_folder}' folder. (excluding Updates & Important).")
     logging.info(f"Archived {len(email_ids)} emails to the '{archive_folder}' folder. (excluding Updates & Important).")
 
-def filterIds(mail,email_ids):
-    return [email_id for email_id in email_ids if not is_email_excluded(mail, email_id)]
+def filterIds(mail, email_ids):
+    filtered_emails = []
+    seen_email_ids = set()
+    i = 0
+    for email_id in email_ids:
+        if email_id in seen_email_ids:
+            continue
+        seen_email_ids.add(email_id)
+        try:
+            if not is_email_excluded(mail, email_id):
+                i+=1
+                filtered_emails.append(email_id)
+        except Exception as e:
+            print(f"Error processing email {email_id}: {e}")
+            logging.error(f"Error processing email {email_id}: {e}")
+    print(len(filtered_emails), " emails processed")
+    print(len(email_ids)-len(filtered_emails), " emails excluded")
+    logging.info(f"{len(filtered_emails)} emails processed")
+    logging.info(f"{len(email_ids)-len(filtered_emails)} emails excluded")
+    return filtered_emails
+
+
+
 
 def is_email_excluded(mail, email_id):
-    status, data = mail.fetch(email_id, "(X-GM-LABELS)")
-    if status == "OK":
-        labels = data[0].decode() if isinstance(data[0], bytes) else ""
-        if "\\important" in labels.lower() or "category_updates" in labels.lower():
+    try:
+        result, data = mail.fetch(email_id, "(X-GM-LABELS)")
+        if result != "OK" or not data:
+            print(f"Error fetching labels for email {email_id}: {data}")
+            return False
+
+        # Combine all returned parts into a single string.
+        # The comprehension handles both bytes and tuple elements.
+        all_labels = " ".join(
+            part.decode("utf-8", errors="ignore") 
+            if isinstance(part, bytes) 
+            else part[1].decode("utf-8", errors="ignore") 
+            for part in data if part
+        )
+        print(f"DEBUG: Combined label data for email {email_id}: {all_labels}")
+
+        # Now check if the combined string contains the target labels.
+        if '\\Important' in all_labels or '\\Updates' in all_labels:
+            print(f"Excluding email {email_id} due to label match.")
+            
             return True
-    return False
+
+        return False
+
+    except Exception as e:
+        print(f"Error checking email {email_id}: {e}")
+        return False

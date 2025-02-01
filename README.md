@@ -37,6 +37,4 @@ A Python script to declutter your Gmail inbox by automatically organizing emails
 - Backup important emails before use
 
 ### Contributions
-Contributions to improve this script are welcome! Feel free to:
-- Submit pull requests
-- Improve documentation
+Contributions to improve this script are welcome! Feel free to submit pull requests

@@ -1,9 +1,3 @@
-
-# Project roadmap
-# Scope : - deleting emails older than {x} years
-# Protocol : IMAP
-# Goals : Delete emails based on conditions (e.g. older than {x} years , flagged as spam, etc)
-
 import logging
 from search import search_condition
 from connection import connect_to_email

@@ -1,13 +1,13 @@
 # Python automation
 ## Email de-clutter
 A Python script to declutter your Gmail inbox by automatically organizing emails based on custom search conditions.
-
+###### ps: this script is not foolproof and may have unexpected behaviours, check warning
 ### Features
 - Search emails using various conditions (UNSEEN, SEEN, BEFORE date, SINCE date)
 - Exclude Important and Updates folders from operations
 - Move emails to Trash
 - Archive emails
-- Detailed logging of operations
+- Logging of operations
 
 ### Prerequisites
 - Python 3.12
@@ -37,8 +37,4 @@ A Python script to declutter your Gmail inbox by automatically organizing emails
 - Backup important emails before use
 
 ### Contributions
-Contributions to improve this script are welcome! Feel free to:
-- Report bugs
-- Suggest features
-- Submit pull requests
-- Improve documentation
+Contributions to improve this script are welcome! Feel free to submit pull requests

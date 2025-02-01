@@ -38,7 +38,5 @@ A Python script to declutter your Gmail inbox by automatically organizing emails
 
 ### Contributions
 Contributions to improve this script are welcome! Feel free to:
-- Report bugs
-- Suggest features
 - Submit pull requests
 - Improve documentation

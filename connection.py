@@ -11,38 +11,7 @@ username = os.getenv("EMAIL")
 password = os.getenv("PASSWORD")
 
 logging.basicConfig(filename='email_cleaner.log', level=logging.DEBUG)
-
-def list_folders(mail):
-    status, folders = mail.list()
-    folder_list = []
-    cleaned_folder_list = []  # List to store cleaned folder names for easier matching
     
-
-    if status == "OK":
-        print("Available folders:\n")
-        for folder in folders:
-            # Decode the folder name
-            parts = folder.decode().split(' "/" ')
-            full_folder_name = parts[1].strip('"')
-            
-            # Clean the folder name (remove [Gmail] prefix)
-            cleaned_folder_name = full_folder_name
-            if full_folder_name.startswith("[Gmail]"):
-                cleaned_folder_name = full_folder_name.replace("[Gmail]/", "").strip()
-
-            # Add to the lists
-            folder_list.append(full_folder_name)  # Original folder name for usage
-            cleaned_folder_list.append(cleaned_folder_name)  # Cleaned folder name for matching
-            
-            
-            print(f"- {cleaned_folder_name}")  # Show the cleaned folder name for matching
-            
-    else:
-        print("Could not retrieve folder list.")
-        logging.info('Could not retrieve folder list')
-    
-    return folder_list, cleaned_folder_list  
-
 # Connect to the email server
 def connect_to_email():
     try:

@@ -32,9 +32,9 @@ A Python script to declutter your Gmail inbox by automatically organizing emails
 - Combinations like `UNSEEN BEFORE` or `SEEN SINCE`
 
 ### ⚠️ Warning
-- Use at your own risk - script provided as-is
+- Use at your own risk
 - Test with small email batch first
 - Backup important emails before use
 
 ### Contributions
-Contributions to improve this script are welcome! Feel free to submit pull requests
+Contributions to improve this script are welcome!
